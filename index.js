@@ -6,24 +6,33 @@ var classes = [];
 var classes_shi = [];
 //对应数列的合适度 占总数的百分比
 var classes_shi_percent = [];
-
+var flag = true;
 window.onload = function () {
-    for (var j = 0; j < 500; j++) {
+    for (var j = 0; j < 50; j++) {
         for (var i = 0; i < 50; i++) {
             new_classes[i] = get_ccC_arry();
         }
+        for (var k = 0; k < 50; k++) {
+            for (var g = 0; g < 50; g++) {
+                classes[k][g] = new_classes[k][g];
+            }
+        }
         get_shi(new_classes);
-//        console.log("new_classes", new_classes);
-        console.log("classes_shi"+j, classes_shi);
+        console.log("得到新的长度为50的数组new_classes" + j, new_classes);
+        console.log("新数组对应的适应度classes_shi" + j, classes_shi);
     }
 };
-function get_ccC_arry(){
-    var classtmp = [];
-     for (var i = 0; i < 50; i++) {
-        classtmp[i] = i + 1;
+
+function get_ccC_arry() {
+    if (flag) {
+        var classtmp = [];
+        for (var i = 0; i < 50; i++) {
+            classtmp[i] = i + 1;
+        }
+        //   构造50个例子
+        get_classes(50, classtmp);
+        flag = false;
     }
-    //   构造50个例子
-    get_classes(50, classtmp);
     //   计算每个例子的适合度   
     get_shi(classes);
     //  计算每个例子被取的百分比；并随机按概率取得对应的i
@@ -32,57 +41,54 @@ function get_ccC_arry(){
     while (ccA == ccB) {
         ccB = get_classes_shi_percent();
     }
-//    console.log(ccA, ccB);
-//    console.log(classes);
+    //    console.log(ccA, ccB);
+    //    console.log(classes);
     var ccC_arry = [];
     var ccA_arry = classes[ccA];
     var ccB_arry = classes[ccB];
     //80%交叉
     if (Math.random() < 0.8) {
-//        console.log("交叉");
+        //        console.log("交叉");
         ccC_arry = C_cross(classes[ccA], classes[ccB]);
         if (Math.random() < 0.8) {
-//            console.log("交叉变异");
+            //            console.log("交叉变异");
             ccC_arry = mutated(ccC_arry);
-//            console.log("ccC_arry", ccC_arry);
+            //            console.log("ccC_arry", ccC_arry);
             return ccC_arry;
         }
         else {
-//            console.log("交叉NO变异");
-//            console.log("ccC_arry", ccC_arry);
+            //            console.log("交叉NO变异");
+            //            console.log("ccC_arry", ccC_arry);
             return ccC_arry;
         }
     }
     else {
-//        console.log("NO交叉");
+        //        console.log("NO交叉");
         if (Math.random() < 0.8) {
-            
             ccA_arry = mutated(ccA_arry);
-//            console.log("NO交叉变异");
-//            console.log("ccA_arry", ccA_arry);
+            //            console.log("NO交叉变异");
+            //            console.log("ccA_arry", ccA_arry);
             return ccA_arry;
         }
         else {
-//            console.log("NO交叉NO变异");
-//            console.log("ccA_arry", ccA_arry);
+            //            console.log("NO交叉NO变异");
+            //            console.log("ccA_arry", ccA_arry);
             return ccA_arry;
         }
     }
-    
 }
-
 //数组洗牌函数
 Array.prototype.shuffle = function () {
-    var input = this;
-    for (var i = input.length - 1; i >= 0; i--) {
-        var randomIndex = Math.floor(Math.random() * (i + 1));
-        var itemAtIndex = input[randomIndex];
-        input[randomIndex] = input[i];
-        input[i] = itemAtIndex;
+        var input = this;
+        for (var i = input.length - 1; i >= 0; i--) {
+            var randomIndex = Math.floor(Math.random() * (i + 1));
+            var itemAtIndex = input[randomIndex];
+            input[randomIndex] = input[i];
+            input[i] = itemAtIndex;
+        }
+        return input;
     }
-    return input;
-}
-//构造50个例子
+    //构造50个例子
 function get_classes(n, classtmp) {
     classes = [];
     for (var i = 0; i < n; i++) {
@@ -127,7 +133,7 @@ function get_sigle_shi(class_sigle) {
                 break;
             }
         }
-    } 
+    }
     for (i = 26; i < 34; i++) {
         for (j = i + 1; j < i + 8; j++) {
             if (is_conflict(class_sigle[i], class_sigle[j])) {
@@ -152,11 +158,24 @@ function get_sigle_shi(class_sigle) {
             }
         }
     }
-    return (50-shi) / 50;
+    return (50 - shi) / 50;
 }
 //判断是否冲突
 function is_conflict(a, b) {
-    if (Math.abs(a - b) < 5) return 1;
+    var i = 5;
+    for (i = 5; i <= 50; i = i + 5) {
+        if (a <= i) {
+            a = Math.floor(a / 5);
+            break;
+        }
+    }
+    for (i = 5; i <= 50; i = i + 5) {
+        if (b <= i) {
+            b = Math.floor(b / 5);
+            break;
+        }
+    }
+    if (a == b) return 1;
     else return 0;
 }
 //计算百分比 并且按概率随机取出对应的i
@@ -196,7 +215,6 @@ function C_cross(a, b) {
     var ccD = [];
     var n_b_one = 10 + 8 * (b_one - 1);
     var n_b_two = 10 + 8 * (b_two - 1);
-    
     for (var i = 0; i < 50; i++) {
         if (i < n_b_one || i >= n_b_two) {
             ccC[i] = a[i];
@@ -220,7 +238,7 @@ function C_cross(a, b) {
     t_a = minous_arry(t_a, tmp);
     t_b = minous_arry(t_b, tmp);
     //重复值替换
-//    console.log("ccC",ccC);
+    //    console.log("ccC",ccC);
     for (var i = 0; i < 50; i++) {
         if (i < n_b_one || i >= n_b_two) {
             for (var j = 0; j < t_b.length; j++)
@@ -229,7 +247,7 @@ function C_cross(a, b) {
                 }
         }
     }
-//    console.log("ccC2",ccC);
+    //    console.log("ccC2",ccC);
     return ccC;
 }
 //变异
