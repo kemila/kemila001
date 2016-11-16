@@ -8,15 +8,19 @@ var classes_shi = [];
 var classes_shi_percent = [];
 var flag = true;
 window.onload = function () {
-    for (var j = 0; j < 50; j++) {
+    for (var j = 0; j < 100; j++) {
         for (var i = 0; i < 50; i++) {
             new_classes[i] = get_ccC_arry();
         }
-        for (var k = 0; k < 50; k++) {
-            for (var g = 0; g < 50; g++) {
-                classes[k][g] = new_classes[k][g];
-            }
-        }
+        //        console.log('classes1',classes);
+        //        console.log('n1',new_classes);
+        //        for (var k = 0; k < 50; k++) {
+        //            for (var g = 0; g < 50; g++) {
+        //                classes[k][g] = new_classes[k][g];
+        //            }
+        //        }
+        classes = new_classes;
+        //        console.log('classes2',classes);
         get_shi(new_classes);
         console.log("得到新的长度为50的数组new_classes" + j, new_classes);
         console.log("新数组对应的适应度classes_shi" + j, classes_shi);
@@ -111,7 +115,10 @@ function get_sigle_shi(class_sigle) {
     //八个分区
     var shi = 0;
     for (i = 0; i < 10; i++) {
-        for (j = i + 1; j < i + 10; j++) {
+        for (j = 0; j < 10; j++) {
+            if (i == j) {
+                break;
+            }
             if (is_conflict(class_sigle[i], class_sigle[j])) {
                 shi++;
                 break;
@@ -119,7 +126,10 @@ function get_sigle_shi(class_sigle) {
         }
     }
     for (i = 10; i < 18; i++) {
-        for (j = i + 1; j < i + 8; j++) {
+        for (j = 10; j < 18; j++) {
+            if (i == j) {
+                break;
+            }
             if (is_conflict(class_sigle[i], class_sigle[j])) {
                 shi++;
                 break;
@@ -127,7 +137,10 @@ function get_sigle_shi(class_sigle) {
         }
     }
     for (i = 18; i < 26; i++) {
-        for (j = i + 1; j < i + 8; j++) {
+        for (j = 18; j < 26; j++) {
+            if (i == j) {
+                break;
+            }
             if (is_conflict(class_sigle[i], class_sigle[j])) {
                 shi++;
                 break;
@@ -135,7 +148,10 @@ function get_sigle_shi(class_sigle) {
         }
     }
     for (i = 26; i < 34; i++) {
-        for (j = i + 1; j < i + 8; j++) {
+        for (j = 26; j < 34; j++) {
+            if (i == j) {
+                break;
+            }
             if (is_conflict(class_sigle[i], class_sigle[j])) {
                 shi++;
                 break;
@@ -143,7 +159,10 @@ function get_sigle_shi(class_sigle) {
         }
     }
     for (i = 34; i < 42; i++) {
-        for (j = i + 1; j < i + 8; j++) {
+        for (j = 34; j < 42; j++) {
+            if (i == j) {
+                break;
+            }
             if (is_conflict(class_sigle[i], class_sigle[j])) {
                 shi++;
                 break;
@@ -151,7 +170,10 @@ function get_sigle_shi(class_sigle) {
         }
     }
     for (i = 42; i < 50; i++) {
-        for (j = i + 1; j < i + 8; j++) {
+        for (j = 42; j < 50; j++) {
+            if (i == j) {
+                break;
+            }
             if (is_conflict(class_sigle[i], class_sigle[j])) {
                 shi++;
                 break;
@@ -165,18 +187,18 @@ function is_conflict(a, b) {
     var i = 5;
     for (i = 5; i <= 50; i = i + 5) {
         if (a <= i) {
-            a = Math.floor(a / 5);
+            a = Math.ceil(a / 5);
             break;
         }
     }
     for (i = 5; i <= 50; i = i + 5) {
         if (b <= i) {
-            b = Math.floor(b / 5);
+            b = Math.ceil(b / 5);
             break;
         }
     }
-    if (a == b) return 1;
-    else return 0;
+    if (a == b) return true;
+    else return false;
 }
 //计算百分比 并且按概率随机取出对应的i
 function get_classes_shi_percent() {
@@ -227,6 +249,8 @@ function C_cross(a, b) {
     }
     var t_a = a.slice(n_b_one, n_b_two);
     var t_b = b.slice(n_b_one, n_b_two);
+    //    console.log("t_a1",t_a);
+    //    console.log("t_b1",t_b);
     var tmp = [];
     for (var i = n_b_one; i < n_b_two; i++) {
         for (var j = n_b_one; j < n_b_two; j++) {
@@ -238,7 +262,7 @@ function C_cross(a, b) {
     t_a = minous_arry(t_a, tmp);
     t_b = minous_arry(t_b, tmp);
     //重复值替换
-    //    console.log("ccC",ccC);
+    //        console.log("ccC1",ccC);
     for (var i = 0; i < 50; i++) {
         if (i < n_b_one || i >= n_b_two) {
             for (var j = 0; j < t_b.length; j++)
@@ -247,35 +271,74 @@ function C_cross(a, b) {
                 }
         }
     }
-    //    console.log("ccC2",ccC);
+    //    console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    //    console.log("a",a);
+    //    console.log("b",b);
+    //    console.log("n_b_one",n_b_one);
+    //    console.log("n_b_two",n_b_two);
+    //    console.log("c2",ccC);
+    //    console.log("tmp",tmp);
+    //    console.log("t_a",t_a);
+    //    console.log("t_b",t_b);
+    //    console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~");
     return ccC;
 }
 //变异
 function mutated(arr) {
-    var a = Math.round(Math.random() * 49 + 1);
-    var b = Math.round(Math.random() * 49 + 1);
+    var a = Math.ceil(Math.random() * 50) - 1;
+    var b = Math.ceil(Math.random() * 50) - 1;
     var t = 0;
-    for (var i = 0;; i++) {
-        if (i > 100) {
-            break;
-        }
-        if ((a < 11 || b < 11) && Math.abs(a - b) > 9) {
+    for (var k = 0;; k++) {
+        if(k>100){return arr}
+        if (is_mutated(a, arr) && is_mutated(b, arr)) {
             t = arr[a];
             arr[a] = arr[b];
             arr[b] = t;
-            break;
-        }
-        else if (Math.abs(a - b) > 7) {
-            t = arr[a];
-            arr[a] = arr[b];
-            arr[b] = t;
-            break;
+            return arr;
         }
         else {
-            b = Math.round(Math.random() * 49 + 1);
+            a = Math.ceil(Math.random() * 50) - 1;
+            b = Math.ceil(Math.random() * 50) - 1;
         }
     }
-    return arr;
+}
+//是否是冲突数字
+function is_mutated(n, arr) {
+    var a = 0
+    var b = 0;
+    if (n >= 0 && n < 11) {
+        a = 0;
+        b = 11
+    }
+    if (n >= 11 && n < 19) {
+        a = 11;
+        b = 19
+    }
+    if (n >= 19 && n < 27) {
+        a = 19;
+        b = 27
+    }
+    if (n >= 27 && n < 35) {
+        a = 27;
+        b = 35
+    }
+    if (n >= 35 && n < 42) {
+        a = 35;
+        b = 42
+    }
+    if (n >= 42 && n < 50) {
+        a = 42;
+        b = 50
+    }
+    for (var i = a; i < b; i++) {
+        if (i == n) {
+            continue;
+        }
+        else if (is_conflict(n, arr[i])) {
+            return true;
+        }
+    }
+    return false;
 }
 //数组去重函数
 function minous_arry(arr1, arr2) {
