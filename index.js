@@ -8,7 +8,7 @@ var classes_shi = [];
 var classes_shi_percent = [];
 var flag = true;
 window.onload = function () {
-    for (var j = 0; j < 100; j++) {
+    for (var j = 0; j < 1; j++) {
         for (var i = 0; i < 50; i++) {
             new_classes[i] = get_ccC_arry();
         }
@@ -23,7 +23,10 @@ window.onload = function () {
         //        console.log('classes2',classes);
         get_shi(new_classes);
         console.log("得到新的长度为50的数组new_classes" + j, new_classes);
-        console.log("新数组对应的适应度classes_shi" + j, classes_shi);
+        var total=0;
+        for (var k = 0; k < 50; k++) {total+=classes_shi[k]}
+//        console.log("新数组对应的适应度classes_shi" + j, classes_shi);
+        console.log("total" + j, total);
     }
 };
 
@@ -42,6 +45,7 @@ function get_ccC_arry() {
     //  计算每个例子被取的百分比；并随机按概率取得对应的i
     var ccA = get_classes_shi_percent();
     var ccB = get_classes_shi_percent();
+    
     while (ccA == ccB) {
         ccB = get_classes_shi_percent();
     }
@@ -57,6 +61,10 @@ function get_ccC_arry() {
         if (Math.random() < 0.8) {
             //            console.log("交叉变异");
             ccC_arry = mutated(ccC_arry);
+            
+            console.log("ccA_arry",ccA_arry);
+            console.log("ccB_arry",ccB_arry);
+            console.log("ccC_arry",ccC_arry);
             //            console.log("ccC_arry", ccC_arry);
             return ccC_arry;
         }
@@ -237,6 +245,7 @@ function C_cross(a, b) {
     var ccD = [];
     var n_b_one = 10 + 8 * (b_one - 1);
     var n_b_two = 10 + 8 * (b_two - 1);
+    
     for (var i = 0; i < 50; i++) {
         if (i < n_b_one || i >= n_b_two) {
             ccC[i] = a[i];
@@ -274,8 +283,8 @@ function C_cross(a, b) {
     //    console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~");
     //    console.log("a",a);
     //    console.log("b",b);
-    //    console.log("n_b_one",n_b_one);
-    //    console.log("n_b_two",n_b_two);
+        console.log("n_b_one",n_b_one);
+        console.log("n_b_two",n_b_two);
     //    console.log("c2",ccC);
     //    console.log("tmp",tmp);
     //    console.log("t_a",t_a);
@@ -289,17 +298,70 @@ function mutated(arr) {
     var b = Math.ceil(Math.random() * 50) - 1;
     var t = 0;
     for (var k = 0;; k++) {
-        if(k>100){return arr}
-        if (is_mutated(a, arr) && is_mutated(b, arr)) {
+        if (is_in_same(a, b)) {
+            b = Math.ceil(Math.random() * 50) - 1;
+            continue;
+        }
+        if (k > 100) {
+            return arr;
+        }
+        if (is_mutated(arr[a], arr) && is_mutated(arr[b], arr)) {
             t = arr[a];
             arr[a] = arr[b];
             arr[b] = t;
+            console.log("变异位置：",a,b);
             return arr;
         }
         else {
             a = Math.ceil(Math.random() * 50) - 1;
             b = Math.ceil(Math.random() * 50) - 1;
         }
+    }
+}
+//判断是否是在同一场次
+function is_in_same(a, b) {
+    var n, m;
+    if (a < 10) {
+        n = 1
+    }
+    if (a < 18 && a >= 10) {
+        n = 2
+    }
+    if (a < 26 && a >= 18) {
+        n = 3
+    }
+    if (a < 34 && a >= 26) {
+        n = 4
+    }
+    if (a < 42 && a >= 34) {
+        n = 5
+    }
+    if (a < 50 && a >= 42) {
+        n = 6
+    }
+    if (b < 10) {
+        m = 1
+    }
+    if (b < 18 && b >= 10) {
+        m = 2
+    }
+    if (b < 26 && b >= 18) {
+        m = 3
+    }
+    if (b < 34 && b >= 26) {
+        m = 4
+    }
+    if (b < 42 && b >= 34) {
+        m = 5
+    }
+    if (b < 50 && b >= 42) {
+        m = 6
+    }
+    if (m === n) {
+        return true
+    }
+    else {
+        return false
     }
 }
 //是否是冲突数字
