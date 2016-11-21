@@ -10,7 +10,9 @@ var flag = true;
 window.onload = function () {
     for (var j = 0; j < 1; j++) {
         for (var i = 0; i < 50; i++) {
+            
             new_classes[i] = get_ccC_arry();
+//                   console.log('new_classes[i]',new_classes[i]);
         }
         //        console.log('classes1',classes);
         //        console.log('n1',new_classes);
@@ -64,7 +66,7 @@ function get_ccC_arry() {
             
             console.log("ccA_arry",ccA_arry);
             console.log("ccB_arry",ccB_arry);
-            console.log("ccC_arry",ccC_arry);
+            console.log("ccC_arry1111",ccC_arry);
             //            console.log("ccC_arry", ccC_arry);
             return ccC_arry;
         }
@@ -106,7 +108,9 @@ function get_classes(n, classtmp) {
     for (var i = 0; i < n; i++) {
         //需要深层拷贝
         classes[i] = classtmp.shuffle().slice(0);
+        
     }
+//    console.log("classesclassesclasses",classes);
 }
 //得到适应度数组
 function get_shi(classes) {
@@ -258,8 +262,12 @@ function C_cross(a, b) {
     }
     var t_a = a.slice(n_b_one, n_b_two);
     var t_b = b.slice(n_b_one, n_b_two);
-    //    console.log("t_a1",t_a);
-    //    console.log("t_b1",t_b);
+    console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        console.log("a",a);
+        console.log("b",b); 
+        
+        console.log("ccC",ccC);
+        console.log("ccD",ccD);
     var tmp = [];
     for (var i = n_b_one; i < n_b_two; i++) {
         for (var j = n_b_one; j < n_b_two; j++) {
@@ -268,8 +276,14 @@ function C_cross(a, b) {
             }
         }
     }
+    
+    console.log("t_a1",t_a);
+    console.log("t_b1",t_b); 
+    console.log("tmp",tmp); 
     t_a = minous_arry(t_a, tmp);
     t_b = minous_arry(t_b, tmp);
+    console.log("t_a2",t_a);
+    console.log("t_b2",t_b);  
     //重复值替换
     //        console.log("ccC1",ccC);
     for (var i = 0; i < 50; i++) {
@@ -285,6 +299,7 @@ function C_cross(a, b) {
     //    console.log("b",b);
         console.log("n_b_one",n_b_one);
         console.log("n_b_two",n_b_two);
+    console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~");
     //    console.log("c2",ccC);
     //    console.log("tmp",tmp);
     //    console.log("t_a",t_a);
